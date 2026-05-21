@@ -44,23 +44,25 @@ void app_main(void)
     rmt_channel_handle_t rmt = buzzer_rmt_init();
     printf("RMT inicializado.\n");
 
-    if (rmt == NULL) {
+    if (rmt == NULL) 
+    {
 
         printf("ERROR: No se pudo inicializar el buzzer\n");
 
-        while (1) {
+        while (1) 
+        {
             vTaskDelay(portMAX_DELAY);
         }
     }
 
     size_t total_notes =sizeof(alegria_melody) / sizeof(buzzer_note_t);
 
-    while (1) {
+    while (1)
+    {
 
         printf("Reproduciendo melodía...\n");
 
-        buzzer_rmt_play_melody(rmt, alegria_melody, total_notes
-        );
+        buzzer_rmt_play_melody(rmt, alegria_melody, total_notes);
 
         vTaskDelay(pdMS_TO_TICKS(5000));
     }

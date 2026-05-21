@@ -46,9 +46,9 @@ rmt_channel_handle_t buzzer_rmt_init(void)
     };
 
     esp_err_t err;
-
     err = rmt_new_tx_channel(&tx_config, &tx_chan);
-    if (err != ESP_OK) {
+    if (err != ESP_OK) 
+    {
         ESP_LOGE(TAG, "Error creando canal TX");
         return NULL;
     }
@@ -60,20 +60,23 @@ rmt_channel_handle_t buzzer_rmt_init(void)
     };
 
     err = rmt_apply_carrier(tx_chan, &carrier_config);
-    if (err != ESP_OK) {
+    if (err != ESP_OK) 
+    {
         ESP_LOGE(TAG, "Error aplicando portadora");
         return NULL;
     }
 
     rmt_copy_encoder_config_t encoder_config = {};
     err = rmt_new_copy_encoder(&encoder_config, &copy_encoder);
-    if (err != ESP_OK) {
+    if (err != ESP_OK) 
+    {
         ESP_LOGE(TAG, "Error creando encoder");
         return NULL;
     }
 
     err = rmt_enable(tx_chan);
-    if (err != ESP_OK) {
+    if (err != ESP_OK) 
+    {
         ESP_LOGE(TAG, "Error habilitando RMT");
         return NULL;
     }
@@ -86,12 +89,14 @@ rmt_channel_handle_t buzzer_rmt_init(void)
  */
 void buzzer_rmt_play_tone(rmt_channel_handle_t tx_chan, uint32_t freq_hz, uint32_t duration_ms)
 {
-    if (tx_chan == NULL) {
+    if (tx_chan == NULL) 
+    {
         return;
     }
 
     /* Silencio */
-    if (freq_hz == 0) {
+    if (freq_hz == 0)
+    {
         vTaskDelay(pdMS_TO_TICKS(duration_ms));
         return;
     }
@@ -105,15 +110,18 @@ void buzzer_rmt_play_tone(rmt_channel_handle_t tx_chan, uint32_t freq_hz, uint32
     rmt_symbol_word_t *symbols =
         malloc(symbol_count * sizeof(rmt_symbol_word_t));
 
-    if (symbols == NULL) {
+    if (symbols == NULL)
+    {
         ESP_LOGE(TAG, "Sin memoria para %lu Hz",
                  (unsigned long)freq_hz);
         return;
     }
 
-    for (size_t i = 0; i < symbol_count; i++) {
+    for (size_t i = 0; i < symbol_count; i++)
+    {
 
-        symbols[i] = (rmt_symbol_word_t) {
+        symbols[i] = (rmt_symbol_word_t) 
+        {
             .level0 = 1,
             .duration0 = half_period_us,
 
@@ -129,7 +137,8 @@ void buzzer_rmt_play_tone(rmt_channel_handle_t tx_chan, uint32_t freq_hz, uint32
 
     esp_err_t err;
     err = rmt_transmit(tx_chan, copy_encoder, symbols, symbol_count * sizeof(rmt_symbol_word_t), &transmit_config);
-    if (err != ESP_OK) {
+    if (err != ESP_OK) 
+    {
         ESP_LOGE(TAG, "Error transmitiendo tono");
         free(symbols);
         return;
@@ -138,7 +147,8 @@ void buzzer_rmt_play_tone(rmt_channel_handle_t tx_chan, uint32_t freq_hz, uint32
     /* Esperar a que termine la transmisión */
     err = rmt_tx_wait_all_done(tx_chan, portMAX_DELAY);
 
-    if (err != ESP_OK) {
+    if (err != ESP_OK) 
+    {
         ESP_LOGE(TAG, "Error esperando transmisión");
     }
 
@@ -150,11 +160,13 @@ void buzzer_rmt_play_tone(rmt_channel_handle_t tx_chan, uint32_t freq_hz, uint32
  */
 void buzzer_rmt_play_melody(rmt_channel_handle_t tx_chan, const buzzer_note_t *melody, size_t note_count)
 {
-    if (melody == NULL || note_count == 0) {
+    if (melody == NULL || note_count == 0) 
+    {
         return;
     }
 
-    for (size_t i = 0; i < note_count; i++) {
+    for (size_t i = 0; i < note_count; i++)
+    {
         buzzer_rmt_play_tone(tx_chan,melody[i].frequency, melody[i].duration_ms);
         /* Pequeña pausa entre notas */
         vTaskDelay(pdMS_TO_TICKS(melody[i].duration_ms / 10));

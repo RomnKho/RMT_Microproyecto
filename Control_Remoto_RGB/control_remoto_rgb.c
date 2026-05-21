@@ -58,15 +58,11 @@ void control_leds(uint16_t address, uint16_t command)
             taskEXIT_CRITICAL(&control_lock);
             for (int i = 0; i < LED_STRIP_NUM; i++)
             {
-                led_strip_set_pixel(led_strip,i,50,50,50);
+                led_strip_set_pixel(led_strip,i,5,5,5);
                 led_strip_refresh(led_strip);            
             }
             vTaskDelay(250 /portTICK_PERIOD_MS);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip,i,0,0,0);
-                led_strip_refresh(led_strip);            
-            }
+            led_strip_clear(led_strip);
             vTaskDelay(250 /portTICK_PERIOD_MS);
             for (int i = 0; i < LED_STRIP_NUM; i++)
             {
@@ -74,25 +70,12 @@ void control_leds(uint16_t address, uint16_t command)
                 led_strip_refresh(led_strip);            
             }
             vTaskDelay(250 /portTICK_PERIOD_MS);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip,i,0,0,0);
-                led_strip_refresh(led_strip);            
-            }
+            led_strip_clear(led_strip);
 
             break;
         //0
         case 0xE916:
-            taskENTER_CRITICAL(&control_lock);
-                red = 0;
-                green = 0;
-                blue = 0;
-            taskEXIT_CRITICAL(&control_lock);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip,i,0,0,0);
-                led_strip_refresh(led_strip);            
-            }
+            led_strip_clear(led_strip);
             break;
         //1
         case 0xF30C:
@@ -103,7 +86,7 @@ void control_leds(uint16_t address, uint16_t command)
             taskEXIT_CRITICAL(&control_lock);
             for (int i = 0; i < LED_STRIP_NUM; i++)
             {
-                led_strip_set_pixel(led_strip,i,250,000,0);
+                led_strip_set_pixel(led_strip,i,250,0,0);
                 led_strip_refresh(led_strip);            
             }            
             break;
@@ -184,11 +167,12 @@ void control_leds(uint16_t address, uint16_t command)
             break;
         //7
         case 0xBD42: 
-            for (int i = 0; i < LED_STRIP_NUM; i++)
+            for (int i = 0; i < (LED_STRIP_NUM/2); i++)
             {
                 led_strip_set_pixel(led_strip,i,150,100,0);
-                led_strip_refresh(led_strip);            
-            }            
+                led_strip_set_pixel(led_strip,(LED_STRIP_NUM-1)-i,0,150,100);            
+            }   
+            led_strip_refresh(led_strip);         
             break;
         //8
         case 0xAD52:

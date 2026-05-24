@@ -83,7 +83,7 @@ esp_err_t rmt_new_musical_score_encoder(const musical_score_encoder_config_t *co
     rmt_musical_score_encoder_t *score_encoder = NULL;
     ESP_GOTO_ON_FALSE(config && ret_encoder, ESP_ERR_INVALID_ARG, err, TAG, "invalid argument");
 
-    // Allocates a proper memory for RMT encoder
+    // Allocates a proper memory block for RMT encoder
     score_encoder = rmt_alloc_encoder_mem(sizeof(rmt_musical_score_encoder_t));
     ESP_GOTO_ON_FALSE(score_encoder, ESP_ERR_NO_MEM, err, TAG, "no mem for musical score encoder");
 

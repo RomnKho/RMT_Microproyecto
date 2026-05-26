@@ -1,6 +1,7 @@
 
 /** 
- * @file musical_buzzer.c 
+ * @file    musical_buzzer.c 
+ * @brief   Implementation of the musical buzzer
  **/
 
 /* ===== INCLUDES =====*/
@@ -121,3 +122,5 @@ void musical_buzzer_play_song(uint8_t song)
 
     ESP_ERROR_CHECK(rmt_disable(buzzer_chan));
 }
+
+/* ===== END OF FILE ===== */

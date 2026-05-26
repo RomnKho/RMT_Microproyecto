@@ -1,11 +1,10 @@
-/****** 
- * @file musical_buzzer.h
- ******/
+/**
+ * @file    musical_buzzer.h
+ * @brief   Header file for musical buzzer
+ **/
 
 #ifndef MUSICAL_BUZZER_H
 #define MUSICAL_BUZZER_H
-
-#include "driver/rmt_tx.h"
 
 /** 
  * @brief Initilializes the TX channel and configures the encoder

@@ -1,7 +1,6 @@
 /****** 
- * 
- * @file wifi.h
- * 
+ * @file    wifi.h
+ * @brief   Header file for wifi AP implementation
  ******/
 
 #ifndef WIFI_H

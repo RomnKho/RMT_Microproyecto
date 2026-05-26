@@ -3,7 +3,8 @@
  * @brief   Header file  for musical buzzer implementation            *
  **********************************************************************/
 
-#pragma once
+#ifndef MUSICAL_SCORE_ENCODER_H
+#define MUSICAL_SCORE_ENCODER_H
 
 #include <stdint.h>
 #include "driver/rmt_encoder.h"
@@ -42,3 +43,7 @@ esp_err_t rmt_new_musical_score_encoder(const musical_score_encoder_config_t *co
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* MUSICAL SCORE ENCODER */
+
+/* ====== END OF FILE ====== */

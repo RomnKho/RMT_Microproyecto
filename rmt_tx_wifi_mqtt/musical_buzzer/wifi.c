@@ -1,5 +1,6 @@
 /***
- * @file wifi.c
+ * @file    wifi.c
+ * @brief   Wifi AP implementation 
  ***/
 
 /* ===== INCLUDES ===== */
@@ -249,3 +250,5 @@ bool wifi_is_connected(void)
 {
     return b_wifi_connected;
 }
+
+/* ====== END OF FILE ====== */

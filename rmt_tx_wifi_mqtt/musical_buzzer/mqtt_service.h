@@ -1,6 +1,7 @@
 /**
- * mqtt-service.h 
-*/
+ * @file    mqtt_service.h 
+ * @brief   Header file for mqtt service
+ **/
 
 #ifndef MQTT_SERVICE_H
 #define MQTT_SERVICE_H
@@ -17,9 +18,6 @@ int  mqtt_service_subscribe(const char *topic);
 
 bool mqtt_service_is_connected(void);
 
-// take care, it can return true, but the connection could be not ready
-// bool mqtt_service_is_connected(void);
-
 #endif
-/*** End of file ***/
 
+/* ===== END OF FILE ===== */

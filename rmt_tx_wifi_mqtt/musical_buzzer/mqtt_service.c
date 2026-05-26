@@ -1,7 +1,7 @@
 /**
- * mqtt-service.h 
- * Deriver of mqtt tcp example from official expressif
-*/
+ * @file    mqtt_service.h 
+ * @brief   Deriver of mqtt tcp example from official expressif
+ **/
 
 /* ===== INCLUDES ===== */
 #include "esp_event.h"
@@ -30,13 +30,8 @@ static jparse_ctx_t     json_parse;
 
 static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data);
 
-/* ====== EXPORTED FUNCTION ====== */
-/****
- * @todo: Implementar cola para mandar datos a main
- * @todo: Procesamiento de datos
- * @todo: Más canciones para elegir en app
- * @todo: app con Node-Red
- ****/ 
+/* ====== EXPORTED FUNCTIONS ====== */
+
 void mqtt_service_init(const char* uri)
 {
     esp_mqtt_client_config_t mqtt_cfg = 
@@ -127,7 +122,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         {
             song_number = (uint8_t)song_number_json;
 
-            if (song_number >= 0 || song_number <= 2)
+            if (song_number <= 2)
             {
                 if (xQueueSend(received_data_mqtt_queue, &song_number, 0) != pdPASS)
                 {
@@ -161,4 +156,4 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     }
 }
 
-/*** End of file ***/
+/* ====== END OF FILE ======= */

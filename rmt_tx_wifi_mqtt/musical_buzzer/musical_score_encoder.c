@@ -1,12 +1,13 @@
-/*
- * SPDX-FileCopyrightText: 2021-2022 Espressif Systems (Shanghai) CO LTD
- *
- * SPDX-License-Identifier: Apache-2.0
- */
+/** 
+ * @file    musical_score_encoder.c
+ * @brief   Creation of the rmt musical encoder
+ **/
 
+/* ===== INCLUDES =====*/
 #include "esp_check.h"
 #include "musical_score_encoder.h"
 
+/* ===== PRIVATE VARIABLES ===== */
 static const char *TAG = "score_encoder";
 
 typedef struct {
@@ -16,7 +17,7 @@ typedef struct {
 } rmt_musical_score_encoder_t;
 
 
-/* ================== PRIVATE FUNCTIONS ================== */
+/* ===== PRIVATE FUNCTIONS ===== */
 
 /********************************
  * @brief Configs the note encoder - Callback 

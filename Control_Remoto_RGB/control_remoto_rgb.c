@@ -85,166 +85,173 @@ bool rmt_rx_done_callback(rmt_channel_handle_t channel,
     @param  command Command code (pressed key).
     @retval None.
 */
-void control_leds(uint16_t address, uint16_t command)
+void leds_control(uint16_t address, uint16_t command)
 {
     uint32_t tmp_r = 0, tmp_g = 0, tmp_b = 0;
-    switch (command)
-    {
-        // ON-OFF
-        case 0xBA45:
-            taskENTER_CRITICAL(&control_lock);
-                red = 50;
-                green = 50;
-                blue = 50;
-            taskEXIT_CRITICAL(&control_lock);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip, i, 5, 5, 5);
+    if(address == 0xFF00) {
+        switch (command)
+        {
+            // ON-OFF
+            case 0xBA45:
+                taskENTER_CRITICAL(&control_lock);
+                    red = 50;
+                    green = 50;
+                    blue = 50;
+                taskEXIT_CRITICAL(&control_lock);
+                for (int i = 0; i < LED_STRIP_NUM; i++)
+                {
+                    led_strip_set_pixel(led_strip, i, 5, 5, 5);
+                    led_strip_refresh(led_strip);
+                }
+                vTaskDelay(250 / portTICK_PERIOD_MS);
+                led_strip_clear(led_strip);
+                vTaskDelay(250 / portTICK_PERIOD_MS);
+                for (int i = 0; i < LED_STRIP_NUM; i++)
+                {
+                    led_strip_set_pixel(led_strip, i, 50, 50, 50);
+                    led_strip_refresh(led_strip);
+                }
+                vTaskDelay(250 / portTICK_PERIOD_MS);
+                led_strip_clear(led_strip);
+                break;
+            // 0
+            case 0xE916:
+                led_strip_clear(led_strip);
+                break;
+            // 1
+            case 0xF30C:
+                taskENTER_CRITICAL(&control_lock);
+                    red = 250;
+                    green = 0;
+                    blue = 0;
+                taskEXIT_CRITICAL(&control_lock);
+                for (int i = 0; i < LED_STRIP_NUM; i++)
+                {
+                    led_strip_set_pixel(led_strip, i, 250, 0, 0);
+                    led_strip_refresh(led_strip);
+                }
+                break;
+            // 2
+            case 0xE718:
+                taskENTER_CRITICAL(&control_lock);
+                    red = 0;
+                    green = 250;
+                    blue = 0;
+                taskEXIT_CRITICAL(&control_lock);
+                for (int i = 0; i < LED_STRIP_NUM; i++)
+                {
+                    led_strip_set_pixel(led_strip, i, 0, 250, 0);
+                    led_strip_refresh(led_strip);
+                }
+                break;
+            // 3
+            case 0xA15E:
+                taskENTER_CRITICAL(&control_lock);
+                    red = 0;
+                    green = 0;
+                    blue = 250;
+                taskEXIT_CRITICAL(&control_lock);
+                for (int i = 0; i < LED_STRIP_NUM; i++)
+                {
+                    led_strip_set_pixel(led_strip, i, 0, 0, 250);
+                    led_strip_refresh(led_strip);
+                }
+                break;
+            // 4
+            case 0xF708:
+                taskENTER_CRITICAL(&control_lock);
+                    red = 150;
+                    green = 100;
+                    blue = 0;
+                taskEXIT_CRITICAL(&control_lock);
+                for (int i = 0; i < LED_STRIP_NUM; i++)
+                {
+                    led_strip_set_pixel(led_strip, i, 150, 100, 0);
+                    led_strip_refresh(led_strip);
+                    vTaskDelay(500 / portTICK_PERIOD_MS);
+                    led_strip_set_pixel(led_strip, i, 0, 0, 0);
+                    led_strip_refresh(led_strip);
+                }
+                break;
+            // 5
+            case 0xE31C:
+                taskENTER_CRITICAL(&control_lock);
+                    red = 150;
+                    green = 0;
+                    blue = 100;
+                taskEXIT_CRITICAL(&control_lock);
+                for (int i = 0; i < LED_STRIP_NUM; i++)
+                {
+                    led_strip_set_pixel(led_strip, i, 150, 0, 100);
+                    led_strip_refresh(led_strip);
+                    vTaskDelay(1000 / portTICK_PERIOD_MS);
+                    led_strip_set_pixel(led_strip, i, 0, 0, 0);
+                    led_strip_refresh(led_strip);
+                }
+                break;
+            // 6
+            case 0xA55A:
+                taskENTER_CRITICAL(&control_lock);
+                    red = 50;
+                    green = 50;
+                    blue = 50;
+                taskEXIT_CRITICAL(&control_lock);
+                for (int i = 0; i < LED_STRIP_NUM; i++)
+                {
+                    led_strip_set_pixel(led_strip, i, 50, 50, 50);
+                    led_strip_refresh(led_strip);
+                }
+                break;
+            // 7
+            case 0xBD42:
+                for (int i = 0; i < (LED_STRIP_NUM / 2); i++)
+                {
+                    led_strip_set_pixel(led_strip, i, 150, 100, 0);
+                    led_strip_set_pixel(led_strip, (LED_STRIP_NUM - 1) - i, 0, 150, 100);
+                }
                 led_strip_refresh(led_strip);
-            }
-            vTaskDelay(250 / portTICK_PERIOD_MS);
-            led_strip_clear(led_strip);
-            vTaskDelay(250 / portTICK_PERIOD_MS);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip, i, 50, 50, 50);
-                led_strip_refresh(led_strip);
-            }
-            vTaskDelay(250 / portTICK_PERIOD_MS);
-            led_strip_clear(led_strip);
-            break;
-        // 0
-        case 0xE916:
-            led_strip_clear(led_strip);
-            break;
-        // 1
-        case 0xF30C:
-            taskENTER_CRITICAL(&control_lock);
-                red = 250;
-                green = 0;
-                blue = 0;
-            taskEXIT_CRITICAL(&control_lock);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip, i, 250, 0, 0);
-                led_strip_refresh(led_strip);
-            }
-            break;
-        // 2
-        case 0xE718:
-            taskENTER_CRITICAL(&control_lock);
-                red = 0;
-                green = 250;
-                blue = 0;
-            taskEXIT_CRITICAL(&control_lock);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip, i, 0, 250, 0);
-                led_strip_refresh(led_strip);
-            }
-            break;
-        // 3
-        case 0xA15E:
-            taskENTER_CRITICAL(&control_lock);
-                red = 0;
-                green = 0;
-                blue = 250;
-            taskEXIT_CRITICAL(&control_lock);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip, i, 0, 0, 250);
-                led_strip_refresh(led_strip);
-            }
-            break;
-        // 4
-        case 0xF708:
-            taskENTER_CRITICAL(&control_lock);
-                red = 150;
-                green = 100;
-                blue = 0;
-            taskEXIT_CRITICAL(&control_lock);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip, i, 150, 100, 0);
-                led_strip_refresh(led_strip);
-                vTaskDelay(500 / portTICK_PERIOD_MS);
-                led_strip_set_pixel(led_strip, i, 0, 0, 0);
-                led_strip_refresh(led_strip);
-            }
-            break;
-        // 5
-        case 0xE31C:
-            taskENTER_CRITICAL(&control_lock);
-                red = 150;
-                green = 0;
-                blue = 100;
-            taskEXIT_CRITICAL(&control_lock);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip, i, 150, 0, 100);
-                led_strip_refresh(led_strip);
-                vTaskDelay(1000 / portTICK_PERIOD_MS);
-                led_strip_set_pixel(led_strip, i, 0, 0, 0);
-                led_strip_refresh(led_strip);
-            }
-            break;
-        // 6
-        case 0xA55A:
-            taskENTER_CRITICAL(&control_lock);
-                red = 50;
-                green = 50;
-                blue = 50;
-            taskEXIT_CRITICAL(&control_lock);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip, i, 50, 50, 50);
-                led_strip_refresh(led_strip);
-            }
-            break;
-        // 7
-        case 0xBD42:
-            for (int i = 0; i < (LED_STRIP_NUM / 2); i++)
-            {
-                led_strip_set_pixel(led_strip, i, 150, 100, 0);
-                led_strip_set_pixel(led_strip, (LED_STRIP_NUM - 1) - i, 0, 150, 100);
-            }
-            led_strip_refresh(led_strip);
-            break;
-        // 8
-        case 0xAD52:
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip, i, 150, 100, 0);
-                led_strip_refresh(led_strip);
-            }
-            break;
-        // 9
-        case 0xB54A:
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip, i, 150, 100, 0);
-                led_strip_refresh(led_strip);
-            }
-            break;
-        // play
-        case 0xEA15:
-            taskENTER_CRITICAL(&control_lock);
-                tmp_r = red;
-                tmp_g = green;
-                tmp_b = blue;
-            taskEXIT_CRITICAL(&control_lock);
-            for (int i = 0; i < LED_STRIP_NUM; i++)
-            {
-                led_strip_set_pixel(led_strip, i, tmp_r, tmp_g, tmp_b);
-                led_strip_refresh(led_strip);
-                vTaskDelay(500 / portTICK_PERIOD_MS);
-                led_strip_set_pixel(led_strip, i, 0, 0, 0);
-                led_strip_refresh(led_strip);
-            }
-            break;
-        default:
-            break;
+                break;
+            // 8
+            case 0xAD52:
+                for (int i = 0; i < LED_STRIP_NUM; i++)
+                {
+                    led_strip_set_pixel(led_strip, i, 150, 100, 0);
+                    led_strip_refresh(led_strip);
+                }
+                break;
+            // 9
+            case 0xB54A:
+                for (int i = 0; i < LED_STRIP_NUM; i++)
+                {
+                    led_strip_set_pixel(led_strip, i, 150, 100, 0);
+                    led_strip_refresh(led_strip);
+                }
+                break;
+            // play
+            case 0xEA15:
+                taskENTER_CRITICAL(&control_lock);
+                    tmp_r = red;
+                    tmp_g = green;
+                    tmp_b = blue;
+                taskEXIT_CRITICAL(&control_lock);
+                for (int i = 0; i < LED_STRIP_NUM; i++)
+                {
+                    led_strip_set_pixel(led_strip, i, tmp_r, tmp_g, tmp_b);
+                    led_strip_refresh(led_strip);
+                    vTaskDelay(500 / portTICK_PERIOD_MS);
+                    led_strip_set_pixel(led_strip, i, 0, 0, 0);
+                    led_strip_refresh(led_strip);
+                }
+                break;
+            default:
+                break;
+        }
     }
+    else 
+    {
+        ESP_LOGW(TAG, "Received command for unknown address: 0x%04X", address);
+    }
+    
 }
 
 /******************************************************************************/
@@ -253,7 +260,7 @@ void control_leds(uint16_t address, uint16_t command)
     @param  pvParameters Unused parameter.
     @retval None (never returns).
 */
-void tarea_control_remoto(void *pvParameters)
+void remote_control_task(void *pvParameters)
 {
     rmt_rx_done_event_data_t rx_data;
     while (1) {
@@ -293,7 +300,7 @@ void tarea_control_remoto(void *pvParameters)
 
                 if (addr_ok && cmd_ok) {
                     ESP_LOGI(TAG, "Address: 0x%04X, Command: 0x%04X", address, command);
-                    control_leds(address, command);
+                    leds_control(address, command);
                 } else {
                     ESP_LOGW(TAG, "NEC frame with integrity error discarded");
                 }
@@ -315,7 +322,7 @@ void tarea_control_remoto(void *pvParameters)
     @brief  Initializes hardware: LED strip, RMT RX channel, queue and callbacks.
     @retval None.
 */
-void control_remoto_init(void)
+void remote_control_init(void)
 {
     // LED strip configuration
     led_strip_config_t strip_config = {

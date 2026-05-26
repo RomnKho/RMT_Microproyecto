@@ -81,7 +81,7 @@ bool rmt_rx_done_callback(rmt_channel_handle_t channel,
 /******************************************************************************/
 /**
     @brief  Controls the LED strip according to the received address and command.
-    @param  address Remote address (typically 0x00FF for standard NEC).
+    @param  address Remote address.
     @param  command Command code (pressed key).
     @retval None.
 */

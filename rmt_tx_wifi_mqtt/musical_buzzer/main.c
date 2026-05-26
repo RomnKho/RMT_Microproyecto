@@ -16,6 +16,7 @@
 /* ====== DEFINES ====== */
 #define     MQTT_INIT_DELAY     2000
 #define     MAIN_DELAY          1000
+#define     QUEUE_DELAY         200
 
 /* ===== PRIVATE VARIABLES ===== */
 
@@ -44,9 +45,13 @@ void app_main(void)
 
     for(;;)
     {
-        xQueueReceive(received_data_mqtt_queue, &song_number, portMAX_DELAY);
+        if(xQueueReceive(received_data_mqtt_queue, &song_number, 0) != pdPASS)
+        {
+            vTaskDelay(pdMS_TO_TICKS(QUEUE_DELAY));
+        }
+
         musical_buzzer_play_song(song_number);
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(MAIN_DELAY));
     }
 }
 

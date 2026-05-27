@@ -112,10 +112,10 @@ void musical_buzzer_play_song(uint8_t song)
         };
         ESP_ERROR_CHECK(rmt_transmit(buzzer_chan, score_encoder, &scores[song].notes[i], sizeof(buzzer_musical_score_t), &tx_config));
 
-        // Detenemos el hilo principal del programa durante la duración de la nota
+        // Delay of the duration of the note
         vTaskDelay(pdMS_TO_TICKS(scores[song].notes[i].duration_ms));
 
-        // Forzamos el apagado y encendido del canal para cortar el bucle infinito
+        // Turn off and on to stop the infinite loop
         ESP_ERROR_CHECK(rmt_disable(buzzer_chan)); 
         ESP_ERROR_CHECK(rmt_enable(buzzer_chan));
     }

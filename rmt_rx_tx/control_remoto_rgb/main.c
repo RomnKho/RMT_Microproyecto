@@ -46,8 +46,8 @@
 */
 void app_main(void)
 {
-    control_remoto_init();
-    xTaskCreate(tarea_control_remoto, "ir_task", 2048, NULL, 5, NULL);
+    remote_control_init();
+    xTaskCreate(remote_control_task, "ir_task", 2048, NULL, 5, NULL);
     for (;;)
     {
         vTaskDelay(50 / portTICK_PERIOD_MS);

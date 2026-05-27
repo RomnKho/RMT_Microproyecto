@@ -49,11 +49,9 @@ void app_main(void)
         {
             vTaskDelay(pdMS_TO_TICKS(QUEUE_DELAY));
         }
-        else
-        {
-            musical_buzzer_play_song(song_number);
-            vTaskDelay(pdMS_TO_TICKS(MAIN_DELAY));
-        }
+
+        musical_buzzer_play_song(song_number);
+        vTaskDelay(pdMS_TO_TICKS(MAIN_DELAY));
     }
 }
 

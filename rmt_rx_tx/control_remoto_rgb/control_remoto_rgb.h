@@ -59,20 +59,20 @@ bool rmt_rx_done_callback(rmt_channel_handle_t channel,
  * @param  command Command code (pressed key).
  * @retval None.
  */
-void control_leds(uint16_t address, uint16_t command);
+void leds_control(uint16_t address, uint16_t command);
 
 /**
- * @brief  FreeRTOS task that decodes NEC frames and calls control_leds.
+ * @brief  FreeRTOS task that decodes NEC frames and calls leds_control.
  * @param  pvParameters Unused parameter.
  * @retval None (never returns).
  */
-void tarea_control_remoto(void *pvParameters);
+void remote_control_task(void *pvParameters);
 
 /**
  * @brief  Initializes hardware: LED strip, RMT RX channel, queue and callbacks.
  * @retval None.
  */
-void control_remoto_init(void);
+void remote_control_init(void);
 
 #ifdef __cplusplus
 }
